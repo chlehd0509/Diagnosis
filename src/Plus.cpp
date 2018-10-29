@@ -9,7 +9,7 @@
 
 
 int main(){
-	const char graph_path[20] = "Plus_Model.tflite\0";
+	const char graph_path[20] = "Plus_Model.lite\0";
 	const int num_threads = 1;
 	std::string input_layer_type = "float";
 	std::vector<int> sizes = {2};
