@@ -163,7 +163,13 @@ int main(int argc, char *argv[]){
 		std::printf("Failed to invoke!\n");
 		exit(0);
 	}
+
+
 	float* output = interpreter->typed_output_tensor<float>(0);
-	printf("output = %f\n", output[0]);
+        printf ("output : \n[");
+        for (int i = 0;i < 5, i++) {
+                printf(" %f\n", output[i]);
+        }
+        printf ("]\n");
 	return 0;
 }
