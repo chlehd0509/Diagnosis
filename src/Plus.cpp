@@ -21,10 +21,13 @@ int main(int argc, char *argv[]){
 
 
 
-        if (argc != 2){
-            printf ("input : [exe] [log file]\n");
+        if (argc != 3){
+            printf ("input : [exe] [wordlist file] [log file]\n");
             exit(0); 
         }
+
+        const char *wordfile = argv[1];
+        const char *logfile = argv[2];
 
         unsigned int conj_bit = 16;
         unsigned int wordlist_size = 128;
