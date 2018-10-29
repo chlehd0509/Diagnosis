@@ -12,7 +12,7 @@ int main(){
 	const int num_threads = 1;
 	std::string input_layer_type = "float";
 	std::vector<int> sizes = {8};
-	float x,y,z,x2,y2,z2,x3,y3;
+//	float x,y,z,x2,y2,z2,x3,y3;
 
 
 
@@ -31,6 +31,7 @@ int main(){
         const char *logfile = argv[3];
         size_t size;
         std::vector<float> bits_val;
+        float bit_coll;
 
         std::vector<std::string> word_arr;
 
@@ -84,6 +85,7 @@ int main(){
 
 
 
+        bit_coll = 0.0f;
         for (int i = 0;i < wordlist_size;i++) {
 
                 if ((i%conj_bit == 0) && (i != 0)) {
