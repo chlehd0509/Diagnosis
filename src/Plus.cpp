@@ -11,13 +11,12 @@ int main(){
 	const char graph_path[20] = "Plus_Model.tflite\0";
 	const int num_threads = 1;
 	std::string input_layer_type = "float";
-	std::vector<int> sizes = {2};
-	float x,y;
+	std::vector<int> sizes = {3};
+	float x,y,z;
 
 	std::unique_ptr<tflite::FlatBufferModel> model(
 		tflite::FlatBufferModel::BuildFromFile(graph_path));
 
-        printf("model...\n");
 	if(!model){
 		printf("Failed to mmap model\n");
 		exit(0);
@@ -27,7 +26,6 @@ int main(){
 	std::unique_ptr<tflite::Interpreter> interpreter;
 	tflite::InterpreterBuilder(*model, resolver)(&interpreter);
 
-        printf("interpreter...\n");
 	if(!interpreter){
 		printf("Failed to construct interpreter\n");
 		exit(0);
@@ -47,10 +45,11 @@ int main(){
 	}
 
 	//read two numbers
-	std::printf("Type two float numbers : ");
-	std::scanf("%f %f", &x, &y);
+	std::printf("Type three float numbers : ");
+	std::scanf("%f %f %f", &x, &y, &z);
 	interpreter->typed_input_tensor<float>(0)[0] = x;
 	interpreter->typed_input_tensor<float>(0)[1] = y;
+	interpreter->typed_input_tensor<float>(0)[2] = z;
 
 	if(interpreter->Invoke() != kTfLiteOk){
 		std::printf("Failed to invoke!\n");
