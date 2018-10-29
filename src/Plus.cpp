@@ -4,12 +4,11 @@
 #include "tensorflow/contrib/lite/kernels/register.h"
 #include "tensorflow/contrib/lite/model.h"
 #include "tensorflow/contrib/lite/string_util.h"
-//#include "tensorflow/contrib/lite/tools/mutable_op_resolver.h"
 
 
 
 int main(){
-	const char graph_path[20] = "Plus_Model.lite\0";
+	const char graph_path[20] = "Plus_Model.tflite\0";
 	const int num_threads = 1;
 	std::string input_layer_type = "float";
 	std::vector<int> sizes = {2};
@@ -18,6 +17,7 @@ int main(){
 	std::unique_ptr<tflite::FlatBufferModel> model(
 		tflite::FlatBufferModel::BuildFromFile(graph_path));
 
+        printf("model...\n");
 	if(!model){
 		printf("Failed to mmap model\n");
 		exit(0);
@@ -27,6 +27,7 @@ int main(){
 	std::unique_ptr<tflite::Interpreter> interpreter;
 	tflite::InterpreterBuilder(*model, resolver)(&interpreter);
 
+        printf("interpreter...\n");
 	if(!interpreter){
 		printf("Failed to construct interpreter\n");
 		exit(0);
