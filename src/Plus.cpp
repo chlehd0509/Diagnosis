@@ -11,11 +11,13 @@
 
 
 int main(int argc, char *argv[]){
+        unsigned int conj_bit = 4;
+        unsigned int wordlist_size = 128;
+
 	const char graph_path[20] = "Plus_Model.tflite\0";
 	const int num_threads = 1;
 	std::string input_layer_type = "float";
-	std::vector<int> sizes = {8};
-//	float x,y,z,x2,y2,z2,x3,y3;
+	std::vector<int> sizes = {int(wordlist_size/conj_bit)};
 
 
 
@@ -28,9 +30,6 @@ int main(int argc, char *argv[]){
 
         const char *wordfile = argv[1];
         const char *logfile = argv[2];
-
-        unsigned int conj_bit = 16;
-        unsigned int wordlist_size = 128;
 
         size_t size;
         std::vector<float> bits_val;
@@ -142,20 +141,7 @@ int main(int argc, char *argv[]){
 		exit(0);
 	}
 
-	//read two numbers
-/*
-	std::printf("Type eight float numbers : ");
-	std::scanf("%f %f %f %f %f %f %f %f", &x, &y, &z, &x2, &y2, &z2, &x3, &y3);
-	interpreter->typed_input_tensor<float>(0)[0] = x;
-	interpreter->typed_input_tensor<float>(0)[1] = y;
-	interpreter->typed_input_tensor<float>(0)[2] = z;
-	interpreter->typed_input_tensor<float>(0)[3] = x2;
-	interpreter->typed_input_tensor<float>(0)[4] = y2;
-	interpreter->typed_input_tensor<float>(0)[5] = z2;
-	interpreter->typed_input_tensor<float>(0)[6] = x3;
-	interpreter->typed_input_tensor<float>(0)[7] = y3;
-*/
-        for (int i = 0;i < 8;i++) {
+        for (int i = 0;i < int(wordlist_size/conj_bit);i++) {
                 interpreter->typed_input_tensor<float>(0)[i] = bits_val[i];
         }
 
@@ -166,8 +152,8 @@ int main(int argc, char *argv[]){
 
 
 	float* output = interpreter->typed_output_tensor<float>(0);
-        printf ("output : \n[");
-        for (int i = 0;i < 5, i++) {
+        printf ("output : \n[\n");
+        for (int i = 0;i < 5;i++) {
                 printf(" %f\n", output[i]);
         }
         printf ("]\n");
