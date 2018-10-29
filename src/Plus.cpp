@@ -1,13 +1,16 @@
 #include <stdio.h>
 #include <string>
 #include <vector>
+#include <iostream>
+#include <fstream>
+#include <streambuf>
 #include "tensorflow/contrib/lite/kernels/register.h"
 #include "tensorflow/contrib/lite/model.h"
 #include "tensorflow/contrib/lite/string_util.h"
 
 
 
-int main(){
+int main(int argc, char *argv[]){
 	const char graph_path[20] = "Plus_Model.tflite\0";
 	const int num_threads = 1;
 	std::string input_layer_type = "float";
@@ -26,9 +29,6 @@ int main(){
         unsigned int conj_bit = 16;
         unsigned int wordlist_size = 128;
 
-	const char *graph_path = argv[1];
-        const char *wordfile = argv[2];
-        const char *logfile = argv[3];
         size_t size;
         std::vector<float> bits_val;
         float bit_coll;
@@ -101,6 +101,7 @@ int main(){
                 }
 
         }
+        bits_val.push_back(bit_coll);
 
 
 
