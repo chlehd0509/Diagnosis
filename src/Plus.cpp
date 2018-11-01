@@ -10,26 +10,39 @@
 
 
 
-int main(int argc, char *argv[]){
-        unsigned int conj_bit = 4;
-        unsigned int wordlist_size = 128;
+unsigned int conj_bit = 4;
+unsigned int wordlist_size = 128;
 
-	const char graph_path[20] = "Plus_Model.tflite\0";
+
+
+int Case_Num = 5;
+
+char *Case_Str[Case_Num] = 
+{
+        "Connect Fail",
+        "DHCP Error",
+        "IP Conflict",
+        "Wrong Password",
+        "Wifi-Success"
+};
+
+
+
+int main(int argc, char *argv[]){
+
 	const int num_threads = 1;
-	std::string input_layer_type = "float";
 	std::vector<int> sizes = {int(wordlist_size/conj_bit)};
 
 
 
-
-
-        if (argc != 3){
-            printf ("input : [exe] [wordlist file] [log file]\n");
+        if (argc != 4){
+            printf ("input : [exe] [wordlist file] [wordlist file] [log file]\n");
             exit(0); 
         }
 
-        const char *wordfile = argv[1];
-        const char *logfile = argv[2];
+	const char *graph_path = argv[1];
+        const char *wordfile = argv[2];
+        const char *logfile = argv[3];
 
         size_t size;
         std::vector<float> bits_val;
@@ -37,7 +50,7 @@ int main(int argc, char *argv[]){
 
         std::vector<std::string> word_arr;
 
-        printf ("Read word file...\n");
+//        printf ("Read word file...\n");
         std::ifstream t1(wordfile);
         if (!t1) {
                 printf ("There's no word file\n");
@@ -49,7 +62,7 @@ int main(int argc, char *argv[]){
         t1.seekg(0);
         t1.read(&wordstr[0], size); 
 
-        printf ("Read log file...\n");
+//        printf ("Read log file...\n");
         std::ifstream t2(logfile);
         if (!t2) {
                 printf ("There's no log file\n");
@@ -61,7 +74,7 @@ int main(int argc, char *argv[]){
         t2.seekg(0);
         t2.read(&logstr[0], size); 
 
-        printf ("Make Wordlist...\n");
+//        printf ("Make Wordlist...\n");
         unsigned int len = wordstr.length();
         unsigned int bef_place = 0;
         for (unsigned int i = 0;i < len;i++) {
@@ -107,10 +120,6 @@ int main(int argc, char *argv[]){
 
 
 
-
-
-
-
 	std::unique_ptr<tflite::FlatBufferModel> model(
 		tflite::FlatBufferModel::BuildFromFile(graph_path));
 
@@ -151,11 +160,19 @@ int main(int argc, char *argv[]){
 	}
 
 
+
 	float* output = interpreter->typed_output_tensor<float>(0);
-        printf ("output : \n[\n");
-        for (int i = 0;i < 5;i++) {
-                printf(" %f\n", output[i]);
+
+        float Max_val = output[0];
+        int Max_Index = 0;
+        
+        for (int i = 1;i < Case_Num;i++) {
+                if (Max_val < output[i]) { Max_val = output[i]; Max_Index = i; }
         }
-        printf ("]\n");
+
+        printf ("Diagnosis Result : [%s]\n", Case_Str[Max_Index]);
+
+
+
 	return 0;
 }
