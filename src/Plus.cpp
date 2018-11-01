@@ -9,13 +9,15 @@
 #include "tensorflow/contrib/lite/string_util.h"
 
 
+#define Case_Num 5
+
+
 
 unsigned int conj_bit = 4;
 unsigned int wordlist_size = 128;
 
 
 
-int Case_Num = 5;
 
 char *Case_Str[Case_Num] = 
 {
@@ -166,7 +168,8 @@ int main(int argc, char *argv[]){
         float Max_val = output[0];
         int Max_Index = 0;
         
-        for (int i = 1;i < Case_Num;i++) {
+        for (int i = 0;i < Case_Num;i++) {
+                printf ("\n%f\n", output[i]);
                 if (Max_val < output[i]) { Max_val = output[i]; Max_Index = i; }
         }
 
