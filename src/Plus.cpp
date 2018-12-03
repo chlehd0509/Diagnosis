@@ -13,7 +13,6 @@
 
 
 
-unsigned int conj_bit = 4;
 unsigned int wordlist_size = 128;
 
 
@@ -33,12 +32,12 @@ char *Case_Str[Case_Num] =
 int main(int argc, char *argv[]){
 
 	const int num_threads = 1;
-	std::vector<int> sizes = {int(wordlist_size/conj_bit)};
+	std::vector<int> sizes = {wordlist_size};
 
 
 
         if (argc != 4){
-            printf ("input : [exe] [wordlist file] [wordlist file] [log file]\n");
+            printf ("input : [exe] [model file] [wordlist file] [log file]\n");
             exit(0); 
         }
 
@@ -48,7 +47,6 @@ int main(int argc, char *argv[]){
 
         size_t size;
         std::vector<float> bits_val;
-        float bit_coll;
 
         std::vector<std::string> word_arr;
 
@@ -102,23 +100,18 @@ int main(int argc, char *argv[]){
 
 
 
-        bit_coll = 0.0f;
         for (int i = 0;i < wordlist_size;i++) {
 
-                if ((i%conj_bit == 0) && (i != 0)) {
-                    bits_val.push_back(bit_coll);
-                    bit_coll = 0.0f;
+                size_t pos = logstr.find (wordstr[i], 0); 
+                float bit_coll = 0.0f;
+                while(pos != std::string::npos){ 
+                        pos = logstr.find (wordstr[i], pos+1); 
+                        bit_coll = bit_coll + 1.0f; 
                 }
 
-                if (logstr.find(word_arr[i]) != std::string::npos) { 
-                    bit_coll = (bit_coll * 2.0f) + 1.0f;
-                }
-                else { 
-                    bit_coll = (bit_coll * 2.0f);
-                }
+                bits_val.push_back(bit_coll);
 
         }
-        bits_val.push_back(bit_coll);
 
 
 
@@ -152,7 +145,7 @@ int main(int argc, char *argv[]){
 		exit(0);
 	}
 
-        for (int i = 0;i < int(wordlist_size/conj_bit);i++) {
+        for (int i = 0;i < wordlist_size;i++) {
                 interpreter->typed_input_tensor<float>(0)[i] = bits_val[i];
         }
 
