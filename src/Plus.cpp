@@ -158,11 +158,13 @@ int main(int argc, char *argv[]){
 
 	float* output = interpreter->typed_output_tensor<float>(0);
 
+        output[3] = output[3] * 0.5;
+
         float Max_val = output[0];
         int Max_Index = 0;
         
         for (int i = 0;i < Case_Num;i++) {
-                printf ("\n%f\n", output[i]);
+                printf ("\n %f \n", output[i]);
                 if (Max_val < output[i]) { Max_val = output[i]; Max_Index = i; }
         }
 
