@@ -13,7 +13,7 @@
 
 
 
-unsigned int wordlist_size = 128;
+unsigned int wordlist_size = 53;
 
 
 
