@@ -158,7 +158,7 @@ int main(int argc, char *argv[]){
 
 	float* output = interpreter->typed_output_tensor<float>(0);
 
-        output[3] = output[3] * 0.8;
+        output[3] = output[3] * 0.9;
         output[2] = output[2] * 0.8;
 
         float Max_val = output[0];
